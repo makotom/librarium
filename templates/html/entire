@@ -3,6 +3,7 @@
 <title>$TITLE$</title>
 <link rel="stylesheet" href="global.css">
 
+<link rel="alternate" type="application/json" title="LRIO" href="index.json">
 <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="index.rss">
 <link rel="alternate" type="application/atom+xml" title="Atom 1.0" href="index.atom">
 
