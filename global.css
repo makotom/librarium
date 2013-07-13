@@ -1,0 +1,10 @@
+@charset "UTF-8";
+
+body{
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+}
+header, footer{
+	text-align: center;
+}

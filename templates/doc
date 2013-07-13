@@ -1,0 +1,26 @@
+<!doctype html>
+<meta charset="UTF-8">
+<title>$LIBTITLE$: $TITLE$</title>
+<link rel="stylesheet" href="../global.css">
+
+<header>
+<a href="$LIBURL$">$LIBTITLE$</a>
+</header>
+
+<hr>
+
+<article>
+$BODY$
+
+<p>
+<a rel="bookmark" href="$PERMALINK$">$PERMALINK$</a><br>
+Published: <time datetime="$BTIME$">$PUBLISHED$</time><br>
+Updated: <time datetime="$MTIME$">$UPDATED$</time>
+</p>
+</article>
+
+<hr>
+
+<footer>
+<a href="$CONTACT$">$AUTHOR$</a> &copy; MMXIII
+</footer>

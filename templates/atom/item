@@ -1,0 +1,7 @@
+  <entry>
+    <id>$URL$</id>
+    <title>$TITLE$</title>
+    <link href="$URL$" />
+    <author><name>$AUTHOR$</name></author>
+    <updated>$MTIME$</updated>
+  </entry>

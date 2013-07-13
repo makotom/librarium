@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>$URL$</id>
+  <title>$TITLE$</title>
+  <link href="$URL$index.atom" rel="self" />
+  <link href="$URL$" />
+  <author><name>$EDITOR$</name></author>
+  <updated>$MTIME$</updated>
+
+  $ENTRIES$
+</feed>
