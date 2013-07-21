@@ -26,14 +26,7 @@ Check README as well.
 (function(){
 	"use strict";
 
-	var USER = {	// Information of the user (author as well as editor)
-		display_name : "John Smith",
-		uris : ["http://example.com/", "mailto:foo@example.com"]
-	},
-	LIBRARY = {	// Information of the library which archives the documents
-		url : "http://example.com/blog/",
-		title : "My Blog"
-	},
+	var CMSPATH = ".cms",
 	TEMPLATES = "templates",
 
 	fs = (function(){
@@ -53,11 +46,13 @@ Check README as well.
 	};
 
 	(function(){
-		var lriox = {	// Object to handle LRIO smoothly
+		var config = JSON.parse(fs.readFile(CMSPATH + "/config.json").toString()),
+
+		lriox = {	// Object to handle LRIO smoothly
 			raw : {	// LRIO (Lightweight Resource Index Object) structure definition
-				url : LIBRARY.url,
-				title : LIBRARY.title,
-				editor : USER,
+				url : config.library.url + (config.library.url[config.library.url.length - 1] !== "/" ? "/" : ""),
+				title : config.library.title,
+				editor : config.user,
 				updated : new Date().toISOString(),
 				resources : fs.exists("index.json") ? JSON.parse(fs.readFile("index.json")).resources : []
 			},
@@ -221,16 +216,16 @@ Check README as well.
 		formatDocument = function(targetPath, docMeta, docBody){
 			var docFmtdHTML = fs.readFile(TEMPLATES + "doc").toString();
 
-			docFmtdHTML = docFmtdHTML.replace(/\$PERMALINK\$/g, docMeta.url);
+			docFmtdHTML = docFmtdHTML.replace(/\$PERMALINK\$/g, encodeURI(docMeta.url));
 			docFmtdHTML = docFmtdHTML.replace(/\$TITLE\$/g, docMeta.title);
 			docFmtdHTML = docFmtdHTML.replace(/\$AUTHOR\$/g, docMeta.author.display_name);
-			docFmtdHTML = docFmtdHTML.replace(/\$CONTACT\$/g, docMeta.author.uris[0]);
+			docFmtdHTML = docFmtdHTML.replace(/\$CONTACT\$/g, encodeURI(docMeta.author.uris[0]));
 			docFmtdHTML = docFmtdHTML.replace(/\$BTIME\$/g, new Date(docMeta.published).toISOString());
 			docFmtdHTML = docFmtdHTML.replace(/\$PUBLISHED\$/g, new Date(docMeta.published).toUTCString());
 			docFmtdHTML = docFmtdHTML.replace(/\$MTIME\$/g, new Date(docMeta.updated).toISOString());
 			docFmtdHTML = docFmtdHTML.replace(/\$UPDATED\$/g, new Date(docMeta.updated).toUTCString());
 			docFmtdHTML = docFmtdHTML.replace(/\$BODY\$/g, docBody);
-			docFmtdHTML = docFmtdHTML.replace(/\$LIBURL\$/g, lriox.raw.url);
+			docFmtdHTML = docFmtdHTML.replace(/\$LIBURL\$/g, encodeURI(lriox.raw.url));
 			docFmtdHTML = docFmtdHTML.replace(/\$LIBTITLE\$/g, lriox.raw.title);
 
 			fs.writeFile((targetPath !== "" ? targetPath : docMeta.url.replace(new RegExp("^" + lriox.raw.url), "")) + "/index.html", docFmtdHTML);
@@ -251,7 +246,7 @@ Check README as well.
 				url : lriox.raw.url + docId + "/",
 				title : docHTMLTitle,
 				type : "text/html",
-				author : USER,
+				author : config.user,
 				published : typeof docPubdate !== typeof undefined ? new Date(docPubdate) : new Date(),
 				updated : new Date()
 			};
@@ -274,7 +269,7 @@ Check README as well.
 		docURL = lriox.raw.url + docId + "/",
 		docIndex = NaN;
 
-		TEMPLATES += "/";
+		TEMPLATES = CMSPATH + "/" + TEMPLATES + "/";
 
 		lriox.buildLRIOIndex();
 		docIndex = lriox.index.indexOf(docURL);
@@ -334,14 +329,14 @@ Check README as well.
 		fs.writeFile("index.json", JSON.stringify(lriox.raw));
 
 		["html", "rss", "atom"].forEach(function(feedType){	// Create index in traditional formats, i.e. HTML, RSS, and Atom.
-			var entire = fs.readFile(TEMPLATES + feedType + "/entire").toString(),
-			itemProto = fs.readFile(TEMPLATES + feedType + "/item").toString(),
+			var entire = fs.readFile(TEMPLATES + "indices/" + feedType + "/entire").toString(),
+			itemProto = fs.readFile(TEMPLATES + "indices/" + feedType + "/item").toString(),
 			entries = [];
 
 			entire = entire.replace(/\$TITLE\$/g, lriox.raw.title);
-			entire = entire.replace(/\$URL\$/g, lriox.raw.url);
+			entire = entire.replace(/\$URL\$/g, encodeURI(lriox.raw.url));
 			entire = entire.replace(/\$EDITOR\$/g, lriox.raw.editor.display_name);
-			entire = entire.replace(/\$CONTACT\$/g, lriox.raw.editor.uris[0]);
+			entire = entire.replace(/\$CONTACT\$/g, encodeURI(lriox.raw.editor.uris[0]));
 			entire = entire.replace(/\$MTIME\$/g, new Date(lriox.raw.updated).toISOString());
 			entire = entire.replace(/\$UPDATED\$/g, new Date(lriox.raw.updated).toUTCString());
 

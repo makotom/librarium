@@ -1,0 +1,10 @@
+{
+	"user" : {
+		"display_name" : "John Smith",
+		"uris" : ["http://example.com/", "mailto:foo@example.com"]
+	},
+	"library" : {
+		"url" : "http://example.com/blog/",
+		"title" : "My Blog"
+	}
+}
