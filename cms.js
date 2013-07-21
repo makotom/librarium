@@ -341,6 +341,7 @@ Check README as well.
 			entire = entire.replace(/\$TITLE\$/g, lriox.raw.title);
 			entire = entire.replace(/\$URL\$/g, lriox.raw.url);
 			entire = entire.replace(/\$EDITOR\$/g, lriox.raw.editor.display_name);
+			entire = entire.replace(/\$CONTACT\$/g, lriox.raw.editor.uris[0]);
 			entire = entire.replace(/\$MTIME\$/g, new Date(lriox.raw.updated).toISOString());
 			entire = entire.replace(/\$UPDATED\$/g, new Date(lriox.raw.updated).toUTCString());
 
