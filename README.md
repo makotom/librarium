@@ -13,7 +13,7 @@ Simplicity is not forgotten, of course. Just create a directory for the document
 ## Usage - with an attached sample
 
 1. Prepare an HTTP server to serve contents.
-2. Edit `.cms/config.json`; modify variables at the beginning of the code accordingly.
+2. Edit `.cms/config.json`
 3. `$ node .cms/run.js add sample`
 4. Modify `sample/source.html` a lot then `$ node .cms/run.js update sample`
 5. Modify `sample/source.html` a little then `$ node .cms/run.js reform sample`
