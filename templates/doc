@@ -22,5 +22,5 @@ Updated: <time datetime="$MTIME$">$UPDATED$</time>
 <hr>
 
 <footer>
-<a href="$CONTACT$">$AUTHOR$</a> &copy; MMXIII
+<a href="$CONTACT$">$AUTHOR$</a>
 </footer>

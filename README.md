@@ -2,7 +2,7 @@
 
 ## What is _Librarium_?
 
-**Librarium** is a simple [content management system](http://en.wikipedia.org/wiki/Content_management_system). It is written in JavaScript and runs on [Node.js](http://nodejs.org). Blogs and diaries are main targets of the software. The goal is to **help building pure and flexible document archives**.
+**Librarium** is a simple [content management system](http://en.wikipedia.org/wiki/Content_management_system). It is written in JavaScript and is intended to be executed on [Node.js](http://nodejs.org). Blogs and diaries are main targets of the software. The goal is to **help building pure and flexible document archives**.
 
 The most characteristic point of Librarium is that it is document-oriented. The system of the contents managed by Librarium could be divided into two parts; Documents and Indices. Documents are contents themselves, such as texts, while Indices sort the Documents and provide quick paths to them in multiple ways, including web feeds. Librarium just does read documents, recognize their title and body, reconstruct into a new HTML document to be published using a template, then rebuild a document index. Thus **everything could be served to public by HTTP servers as static files**. As well, there is a strict rule that **every source content managed by Librarium must be an independent HTML document**. However, the philosophy of Librarium is confident that _HTML is more proper format to preserve electronical documents_.
 
@@ -47,4 +47,4 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
 --- 
-[Makoto Mizukami](http://makotom.org/) &copy; MMXIII
+&copy; [Makoto Mizukami](http://makotom.org/) MMXIII

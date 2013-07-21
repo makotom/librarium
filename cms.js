@@ -36,7 +36,15 @@ Check README as well.
 	},
 	TEMPLATES = "templates",
 
-	fs = require("fs"),
+	fs = (function(){
+		var nodeFsAPI = require("fs");
+
+		return {
+			exists : nodeFsAPI.existsSync,
+			readFile : nodeFsAPI.readFileSync,
+			writeFile : nodeFsAPI.writeFileSync
+		};
+	})(),
 
 	argv = process.argv.slice(1),
 
@@ -51,7 +59,7 @@ Check README as well.
 				title : LIBRARY.title,
 				editor : USER,
 				updated : new Date().toISOString(),
-				resources : fs.existsSync("index.json") ? JSON.parse(fs.readFileSync("index.json")).resources : []
+				resources : fs.exists("index.json") ? JSON.parse(fs.readFile("index.json")).resources : []
 			},
 			index : [],	// Index to search the documents quickly
 			buildLRIOIndex : function(){	// Index builder
@@ -211,7 +219,7 @@ Check README as well.
 		// @param string docBody body of the document
 		// @param string targetPath the directory to save the formatted document
 		formatDocument = function(targetPath, docMeta, docBody){
-			var docFmtdHTML = fs.readFileSync(TEMPLATES + "doc").toString();
+			var docFmtdHTML = fs.readFile(TEMPLATES + "doc").toString();
 
 			docFmtdHTML = docFmtdHTML.replace(/\$PERMALINK\$/g, docMeta.url);
 			docFmtdHTML = docFmtdHTML.replace(/\$TITLE\$/g, docMeta.title);
@@ -225,7 +233,7 @@ Check README as well.
 			docFmtdHTML = docFmtdHTML.replace(/\$LIBURL\$/g, lriox.raw.url);
 			docFmtdHTML = docFmtdHTML.replace(/\$LIBTITLE\$/g, lriox.raw.title);
 
-			fs.writeFileSync((targetPath !== "" ? targetPath : docMeta.url.replace(new RegExp("^" + lriox.raw.url), "")) + "/index.html", docFmtdHTML);
+			fs.writeFile((targetPath !== "" ? targetPath : docMeta.url.replace(new RegExp("^" + lriox.raw.url), "")) + "/index.html", docFmtdHTML);
 
 			return;
 		},
@@ -235,7 +243,7 @@ Check README as well.
 		// @param string docPubdate date of publish
 		// @return object docMeta information of the new document
 		createNewItem = function(docId, docPubdate){
-			var docHTMLText = fs.readFileSync(docId + "/source.html").toString(),
+			var docHTMLText = fs.readFile(docId + "/source.html").toString(),
 			docHTMLTitle = getHTMLTitle(docHTMLText),
 			docHTMLBody = getHTMLBodyEntity(docHTMLText),
 
@@ -273,7 +281,7 @@ Check README as well.
 
 		switch(argv[1]){
 			case "add":
-				if(!fs.existsSync(docId)){
+				if(!fs.exists(docId)){
 					logErr("Document not found.");
 					return;
 				}
@@ -291,18 +299,18 @@ Check README as well.
 				lriox.del(docURL);
 				break;
 			case "update":
-				if(!fs.existsSync(docId) || docIndex === -1){
+				if(!fs.exists(docId) || docIndex === -1){
 					logErr("Document not found.");
 					return;
 				}
 				lriox.rpl(docURL, createNewItem(docId, lriox.raw.resources[docIndex].published));
 				break;
 			case "reform":
-				if(!fs.existsSync(docId) || docIndex === -1){
+				if(!fs.exists(docId) || docIndex === -1){
 					logErr("Document not found.");
 					return;
 				}
-				formatDocument(docId, lriox.raw.resources[docIndex], getHTMLBodyEntity(fs.readFileSync(docId + "/source.html").toString()));
+				formatDocument(docId, lriox.raw.resources[docIndex], getHTMLBodyEntity(fs.readFile(docId + "/source.html").toString()));
 				break;
 			case "renovate":
 				lriox.raw.resources.forEach(function(document){
@@ -311,7 +319,7 @@ Check README as well.
 					formatDocument(
 						docPath,
 						document,
-						getHTMLBodyEntity(fs.readFileSync(docPath + "/source.html").toString())
+						getHTMLBodyEntity(fs.readFile(docPath + "/source.html").toString())
 					);
 
 					return;
@@ -322,12 +330,12 @@ Check README as well.
 				return;
 		}
 
-		fs.existsSync("index.json") && fs.writeFileSync("index.json~", fs.readFileSync("index.json"));
-		fs.writeFileSync("index.json", JSON.stringify(lriox.raw));
+		fs.exists("index.json") && fs.writeFile("index.json~", fs.readFile("index.json"));
+		fs.writeFile("index.json", JSON.stringify(lriox.raw));
 
 		["html", "rss", "atom"].forEach(function(feedType){	// Create index in traditional formats, i.e. HTML, RSS, and Atom.
-			var entire = fs.readFileSync(TEMPLATES + feedType + "/entire").toString(),
-			itemProto = fs.readFileSync(TEMPLATES + feedType + "/item").toString(),
+			var entire = fs.readFile(TEMPLATES + feedType + "/entire").toString(),
+			itemProto = fs.readFile(TEMPLATES + feedType + "/item").toString(),
 			entries = [];
 
 			entire = entire.replace(/\$TITLE\$/g, lriox.raw.title);
@@ -348,7 +356,7 @@ Check README as well.
 				entries.push(item);
 			});
 
-			fs.writeFileSync("index." + feedType, entire.replace(/\$ENTRIES\$/, entries.join("\n").trim()));
+			fs.writeFile("index." + feedType, entire.replace(/\$ENTRIES\$/, entries.join("\n").trim()));
 
 			return;
 		});
