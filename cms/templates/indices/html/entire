@@ -7,8 +7,6 @@
 <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="index.rss">
 <link rel="alternate" type="application/atom+xml" title="Atom 1.0" href="index.atom">
 
-<body>
-
 <h1>$TITLE$</h1>
 
 <ul>
