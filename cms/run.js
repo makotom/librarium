@@ -26,7 +26,7 @@ Check README as well.
 (function(){
 	"use strict";
 
-	var CMSPATH = ".cms",
+	var CMSPATH = "cms",
 	TEMPLATES = "templates",
 
 	fs = (function(){
@@ -236,8 +236,9 @@ Check README as well.
 		// Function to generate document metadata in order to add a new document to LRIO
 		// @param string docId directory which contains the document
 		// @param string docPubdate date of publish
+		// @param bool metaOnly whether create a formatted document
 		// @return object docMeta information of the new document
-		createNewItem = function(docId, docPubdate){
+		createNewItem = function(docId, docPubdate, metaOnly){
 			var docHTMLText = fs.readFile(docId + "/source.html").toString(),
 			docHTMLTitle = getHTMLTitle(docHTMLText),
 			docHTMLBody = getHTMLBodyEntity(docHTMLText),
@@ -247,7 +248,7 @@ Check README as well.
 				title : docHTMLTitle,
 				type : "text/html",
 				author : config.user,
-				published : typeof docPubdate !== typeof undefined ? new Date(docPubdate) : new Date(),
+				published : docPubdate !== undefined ? new Date(docPubdate) : new Date(),
 				updated : new Date()
 			};
 
@@ -258,7 +259,9 @@ Check README as well.
 				logErr("Warning: Empty body?");
 			}
 
-			formatDocument(docId, docMeta, docHTMLBody);
+			if(metaOnly !== true){
+				formatDocument(docId, docMeta, docHTMLBody);
+			}
 
 			return docMeta;
 		},
@@ -276,6 +279,7 @@ Check README as well.
 
 		switch(argv[1]){
 			case "add":
+			case "index":
 				if(!fs.exists(docId)){
 					logErr("Document not found.");
 					return;
@@ -284,8 +288,9 @@ Check README as well.
 					logErr("Document already exists.");
 					return;
 				}
-				lriox.add(createNewItem(docId));
+				lriox.add(createNewItem(docId, undefined, (argv[1] === "add" ? false : true)));
 				break;
+
 			case "remove":
 				if(docIndex === -1){
 					logErr("Document not found.");
@@ -293,6 +298,7 @@ Check README as well.
 				}
 				lriox.del(docURL);
 				break;
+
 			case "update":
 				if(!fs.exists(docId) || docIndex === -1){
 					logErr("Document not found.");
@@ -300,6 +306,12 @@ Check README as well.
 				}
 				lriox.rpl(docURL, createNewItem(docId, lriox.raw.resources[docIndex].published));
 				break;
+
+			case "popup":
+				lriox.raw.resources[docIndex].updated = new Date();
+				lriox.raw.resources.unshift(lriox.raw.resources.splice(docIndex, 1)[0]);
+				break;
+
 			case "reform":
 				if(!fs.exists(docId) || docIndex === -1){
 					logErr("Document not found.");
@@ -307,6 +319,7 @@ Check README as well.
 				}
 				formatDocument(docId, lriox.raw.resources[docIndex], getHTMLBodyEntity(fs.readFile(docId + "/source.html").toString()));
 				break;
+
 			case "renovate":
 				lriox.raw.resources.forEach(function(document){
 					var docPath = document.url.replace(new RegExp("^" + lriox.raw.url), "");
@@ -320,6 +333,7 @@ Check README as well.
 					return;
 				});
 				break;
+
 			default:
 				logErr("Unknown command.");
 				return;
