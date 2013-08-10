@@ -10,15 +10,15 @@ Librarium is also unique as it records indices in the form of JSON. _Lightweight
 
 Simplicity is not forgotten, of course. Just create a directory for the document, tell the name to the programme, and find out you have already done!
 
-## Usage - with an attached sample
+## Quick usage - with an attached sample
 
 1. Prepare an HTTP server to serve contents.
-2. Edit `.cms/config.json`
-3. `$ node .cms/run.js add sample`
-4. Modify `sample/source.html` a lot then `$ node .cms/run.js update sample`
-5. Modify `sample/source.html` a little then `$ node .cms/run.js reform sample`
-6. Modify `templates/doc` then `$ node .cms/run.js renovate`
-7. `$ node .cms/run.js remove sample`
+2. Edit `cms/config.json`
+3. `$ node cms/run.js add sample`
+4. Modify `sample/source.html` a lot then `$ node cms/run.js update sample`
+5. Modify `sample/source.html` a little then `$ node cms/run.js reform sample`
+6. Modify `templates/doc` then `$ node cms/run.js renovate`
+7. `$ node cms/run.js remove sample`
 
 ## Known issues
 
