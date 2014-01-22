@@ -4,7 +4,7 @@
 
 **Librarium** is a simple [content management system](http://en.wikipedia.org/wiki/Content_management_system). It is written in JavaScript and is intended to be executed on [Node.js](http://nodejs.org). Blogs and diaries are main targets of the software. The goal is to **help building pure and flexible document archives**.
 
-The most characteristic point of Librarium is that it is document-oriented. The system of the contents managed by Librarium could be divided into two parts; Documents and Indices. Documents are contents themselves, such as texts, while Indices sort the Documents and provide quick paths to them in multiple ways, including web feeds. Librarium just does read documents, recognize their title and body, reconstruct into a new HTML document to be published using a template, then rebuild a document index. Thus **everything could be served to public by HTTP servers as static files**. As well, there is a strict rule that **every source content managed by Librarium must be an independent HTML document**. However, the philosophy of Librarium is confident that _HTML is more proper format to preserve electronical documents_.
+The most characteristic point of Librarium is that it is document-oriented. The system of the contents managed by Librarium could be divided into two parts; Documents and Indices. Documents are contents themselves, such as texts, while Indices sort the Documents and provide quick paths to them in multiple ways, including web feeds. Librarium just does read documents, recognize their title and body, reconstruct into a new HTML document to be published using a template, then rebuild a document index. Thus **everything could be served to the public by HTTP servers as static files**. As well, there is a strict rule that **every source content managed by Librarium must be an independent HTML document**. This rule derives from the philosophy of Librarium that _HTML is more proper format to preserve electronical documents_.
 
 Librarium is also unique as it records indices in the form of JSON. _Lightweight Resource Index Object_ is proposed within Librarium, in accordance of a belief that URI should be a sole pointer of the resource available. Librarium aims to demonstrate how powerful and how computer-friendly the object notation of resource index could be, comparing to XML-based syndication systems. Hence Librarium **keeps the document index in public as `index.json` and provides an aggregation of basic resource information in JSON**, alongside web feeds in other formats, like [RSS](http://en.wikipedia.org/wiki/RSS).
 
@@ -26,7 +26,7 @@ Simplicity is not forgotten, of course. Just create a directory for the document
 
 ## Licence
 
-Copyright (C) 2013 Makoto Mizukami. All rights reserved.
+Copyright (C) 2014 Makoto Mizukami. All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the "Software"),
@@ -47,4 +47,4 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
 --- 
-&copy; [Makoto Mizukami](http://makotom.org/) MMXIII
+&copy; [Makoto Mizukami](http://makotom.org/) MMXIV
